@@ -61,8 +61,11 @@ function love.draw()
 end
 
 function drawLogoWithFade(logoImage)
-    logoX = love.graphics.getWidth() / 3
-    logoY = love.graphics.getHeight() / 3
+    -- 
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+    local logoX = (screenWidth - logoImage:getWidth()) / 2 
+    local logoY = (screenHeight - logoImage:getHeight()) / 2
     love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.draw(logoImage, logoX, logoY)
     love.graphics.setColor(1, 1, 1, 1)
