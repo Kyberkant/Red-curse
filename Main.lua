@@ -1,22 +1,23 @@
 local game = require "Gscript/game"
 local buttons = require "Gscript/menuButtons"
+local drew = require "Gscript/drawStuff"
 
 local fadeDuration = 1.5 -- Time for fade-in/out in seconds
 local displayDuration = 2 -- Time logos stay fully visible after fade-in
-local currentPhase = 3
+local currentPhase = 1
 local menuItem = 1
 local startTime = love.timer.getTime()
 local keyPressed = nil
 local menuDebug = true
 
+--love.window.setMode(1920,1080)
+
 function love.load()
 
-    logo = love.graphics.newImage('assets/images/logo.png')
-    NGlogo = love.graphics.newImage('assets/images/newgrounds_logo.png')
-    Rlogo = love.graphics.newImage('assets/images/logoBumpin.png')
     font = love.graphics.newFont(24)
     love.graphics.setFont(font)
     love.mouse.setVisible(false)
+    
 end
 
 function love.update(dt)
@@ -96,15 +97,17 @@ function love.update(dt)
 end
 
 function love.draw()
+    
     if currentPhase == 1 then
         -- Draw the logo only if elapsed time is greater than 5
-        drawLogoWithFade(logo)
+        drew:drawLogoWithFade(drew.logoNames.logo, alpha)
     elseif currentPhase == 2 then
-        drawLogoWithFade(NGlogo)
+        drew:drawLogoWithFade(drew.logoNames.NGlogo, alpha)
     elseif currentPhase == 3 then
-        drawLogo(Rlogo)
+        drew:drawLogo(drew.logoNames.Rlogo)
         love.graphics.setColor(1, 0, 0)
-        love.graphics.print("Press ENTER to continue", 250, 500)
+        drew:drawLogoText("press ENTER to continue", drew.logoNames.Rlogo, textX, textY)
+
     end
 
     if game.state.menu then 
@@ -138,24 +141,3 @@ function love.keypressed(key, scancode, isrepeat)
     
 end
 
-function drawLogoWithFade(logoImage)
-    -- 
-    local screenWidth = love.graphics.getWidth()
-    local screenHeight = love.graphics.getHeight()
-    local logoX = (screenWidth - logoImage:getWidth()) / 2 
-    local logoY = (screenHeight - logoImage:getHeight()) / 2
-    love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.draw(logoImage, logoX, logoY)
-    love.graphics.setColor(1, 1, 1, 1)
-end
-
-function drawLogo(logoImage)
-    -- 
-    local screenWidth = love.graphics.getWidth()
-    local screenHeight = love.graphics.getHeight()
-    local logoX = (screenWidth - logoImage:getWidth()) / 2 
-    local logoY = (screenHeight - logoImage:getHeight()) / 2
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(logoImage, logoX, logoY)
-    love.graphics.setColor(1, 1, 1, 1)
-end
