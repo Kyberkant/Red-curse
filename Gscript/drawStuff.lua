@@ -4,11 +4,20 @@ function drewThings()
     local NGlogo = love.graphics.newImage('assets/images/newgrounds_logo.png')
     local Rlogo = love.graphics.newImage('assets/images/logoBumpin.png')
 
+    -- load menu static images
+    local buildings = love.graphics.newImage('assets/images/menu/buildings.png')
+    local tower = love.graphics.newImage('assets/images/menu/tower.png')
     return {
         logoNames = {
             logo = logo,
             NGlogo = NGlogo,
             Rlogo = Rlogo
+        },
+
+        menuImg = {
+            
+            tower = tower,
+            buildings = buildings
         },
 
         drawLogoWithFade = function(self, logoImage, alpha)
@@ -58,7 +67,19 @@ function drewThings()
             local textY = logoY + logoName:getHeight() + 10 -- Place below the logo with padding
 
             love.graphics.print(text, textX, textY)
-        end
+        end,
+
+        drawMenu = function(self, menuImage)
+            local screenWidth = love.graphics.getWidth()
+            local screenHeight = love.graphics.getHeight()
+            local scale = 0.75
+            local menuX = (screenWidth - menuImage:getWidth() * scale) / 2
+            local menuY = (screenHeight - menuImage:getHeight() * scale) / 2
+            love.graphics.push() -- Saves the original transformation
+            love.graphics.scale(scale, scale)
+            love.graphics.draw(menuImage, menuX / scale, menuY / scale)
+            love.graphics.pop() -- Restores the transformation
+        end,
     }
 end
 
