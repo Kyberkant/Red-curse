@@ -4,13 +4,14 @@ local drew = require "Gscript/drawStuff"
 
 local fadeDuration = 1.5 -- Time for fade-in/out in seconds
 local displayDuration = 2 -- Time logos stay fully visible after fade-in
-local currentPhase = 1
+local currentPhase = 3
 local menuItem = 1
 local startTime = love.timer.getTime()
 local keyPressed = nil
 local menuDebug = true
 
---love.window.setMode(1920,1080)
+
+love.window.setFullscreen(true, "desktop")
 
 function love.load()
 
@@ -46,7 +47,9 @@ function love.update(dt)
             currentPhase = 3 -- Move to next phase
         end
     elseif currentPhase == 3 then
+        
         if keyPressed == "return" then
+            
             currentPhase = 4
             keyPressed = nil
             game:switchGameState("menu")
@@ -60,6 +63,7 @@ function love.update(dt)
             -- shader will activate on menuItem
             if keyPressed == "return" then
                 game:switchGameState("story")
+                keyPressed = nil
             end
 
         elseif menuItem == 2 then
@@ -67,6 +71,7 @@ function love.update(dt)
              -- shader will activate on menuItem
             if keyPressed == "return" then
                 game:switchGameState("freeplay")
+                keyPressed = nil
             end
 
         elseif menuItem == 3 then
@@ -74,6 +79,7 @@ function love.update(dt)
             -- shader will activate on menuItem
             if keyPressed == "return" then
                 game:switchGameState("setting")
+                keyPressed = nil
             end
 
         elseif menuItem == 4 then
@@ -81,6 +87,7 @@ function love.update(dt)
             -- shader will activate on menuItem
             if keyPressed == "return" then
                 game:switchGameState("credits")
+                keyPressed = nil
             end
 
         elseif menuItem == 5 then
@@ -88,10 +95,46 @@ function love.update(dt)
             -- shader will activate on menuItem
             if keyPressed == "return" then
                 game:switchGameState("achievements")
+                keyPressed = nil
             end
 
         end
 
+    end
+
+    if game.state.story then
+        if keyPressed == "escape" then
+            game:switchGameState("menu")
+            keyPressed = nil
+        end
+    end
+
+    if game.state.freeplay then
+        if keyPressed == "escape" then
+            game:switchGameState("menu")
+            keyPressed = nil
+        end
+    end
+
+    if game.state.setting then
+        if keyPressed == "escape" then
+            game:switchGameState("menu")
+            keyPressed = nil
+        end
+    end
+
+    if game.state.credits then
+        if keyPressed == "escape" then
+            game:switchGameState("menu")
+            keyPressed = nil
+        end
+    end
+
+    if game.state.achievements then
+        if keyPressed == "escape" then
+            game:switchGameState("menu")
+            keyPressed = nil
+        end
     end
     
 end
@@ -107,16 +150,34 @@ function love.draw()
         drew:drawLogo(drew.logoNames.Rlogo)
         love.graphics.setColor(1, 0, 0)
         drew:drawLogoText("press ENTER to continue", drew.logoNames.Rlogo, textX, textY)
+        love.graphics.setColor(1, 1, 1)
 
     end
 
     if game.state.menu then 
+        if keyPressed == "escape" then
+            game:switchGameState("void")
+            currentPhase = 3
+        end
+
+        local screenWidth, screenHeight = love.graphics.getDimensions() 
+
+        local x = screenWidth * 0.1
+        local y = screenHeight * 0.1
         -- menu function here
-        buttons:makeButton(buttons.names.storyButton, -410, -250)
-        buttons:makeButton(buttons.names.freeplayButton, -350, -100)
-        buttons:makeButton(buttons.names.settingsButton, -340, 50)
-        buttons:makeButton(buttons.names.achievementsButton, -150, 375, 0.5, 0.5)
-        --love.graphics.rectangle('line',x,y,100,50)
+        --buttons:makeButton(buttons.names.storyButton, x, y)
+        --buttons:makeButton(buttons.names.freeplayButton, -350, -100)
+        --buttons:makeButton(buttons.names.settingsButton, -340, 50)
+        --buttons:makeButton(buttons.names.achievementsButton, -150, 375, 0.5, 0.5)
+        love.graphics.rectangle('line',x,y,250,100)
+        love.graphics.rectangle('line',x,y*4,250,100)
+        love.graphics.rectangle('line',x,y*8,250,100)
+
+
+        for name, img in pairs(drew.menuImg) do
+            --love.graphics.print("Current Image: " .. name, 10, 10) 
+            drew:drawMenu(img) -- Draws the image
+        end
     end
 
     if menuDebug then 
@@ -140,4 +201,7 @@ function love.keypressed(key, scancode, isrepeat)
     end
     
 end
+
+easing = {}
+
 
