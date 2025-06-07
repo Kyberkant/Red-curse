@@ -2,22 +2,21 @@ function createGame()
     return {
         state = {
             menu = false,
-            story = false,
-            freeplay = false,
+            song1 = false,
+            song2 = false,
+            song3 = false,
+           
             setting = false,
-            credits = false,
+            
             achievements = false,
             void = true
         },
 
         switchGameState = function(self, state)
-            self.state.menu = state == "menu"
-            self.state.story = state == "story"
-            self.state.freeplay = state == "freeplay"
-            self.state.setting = state == "setting"
-            self.state.credits = state == "credits"
-            self.state.achievements = state == "achievements"
-            self.state.void = state == "void"
+            for k in pairs(self.state) do
+                self.state[k] = false
+            end
+            self.state[state] = true
         end
     }
 end
