@@ -1,0 +1,9 @@
+BPM=160
+SONG=my-fnf-song
+
+[NOTES]
+100,0,true
+250,1,false
+400,2,true
+600,3,false
+800,0,true
